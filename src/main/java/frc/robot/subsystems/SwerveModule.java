@@ -20,8 +20,6 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 
-//import frc.robot.Constants.ModuleConstants;
-
 /** 
  * A class which represents a set of driving and turning motors, motor controllers, and encoders in a Swerve Module 
 */

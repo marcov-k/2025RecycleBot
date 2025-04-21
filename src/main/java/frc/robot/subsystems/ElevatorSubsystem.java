@@ -15,21 +15,15 @@ public class ElevatorSubsystem extends SubsystemBase{
     private final SparkMax m_ElevatorLeftSpark; 
     private final SparkMax m_ElevatorRightSpark;
     private RelativeEncoder encoder;
-    
-    
     private double currentspeed;
     private double currentposition;
     public double elevatorspeedlimiter;
-    public int level;
-    public boolean manualcontrol;
+   
 
     public static final class ElevatorConstants {
         // SPARK MAX CAN IDs
         public static final int kElevatorLeftCanId = 9;
         public static final int kElevatorRightCanId = 10;
-
-        // DIO Port for Limit switch
-        public static final int kElevatorLimitSwitchPort = 0;
 
         // Speed
         public static final double kElevatorSpeed = 1.0;
@@ -41,27 +35,17 @@ public class ElevatorSubsystem extends SubsystemBase{
         public static final SparkMaxConfig followConfig = new SparkMaxConfig();
 
         static {              
-                
-
-                leadConfig.smartCurrentLimit(50);
-                leadConfig.idleMode(IdleMode.kBrake);  
-                leadConfig.openLoopRampRate(2.0);   
-                leadConfig.closedLoopRampRate(0.0);   
-                
-
-                leadConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-                leadConfig.closedLoop.pid(0.4, 0, 0.2);
-                leadConfig.closedLoop.outputRange(-1,1);
-                
-
-                followConfig.apply(leadConfig);
-                followConfig.inverted(true);
+            leadConfig.smartCurrentLimit(50);
+            leadConfig.idleMode(IdleMode.kBrake);  
+            leadConfig.openLoopRampRate(2.0);   
+            leadConfig.closedLoopRampRate(0.0);   
+            leadConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+            leadConfig.closedLoop.pid(0.4, 0, 0.2);
+            leadConfig.closedLoop.outputRange(-1,1);
+            followConfig.apply(leadConfig);
+            followConfig.inverted(true);
         }
-
     } 
-
-
-
 
     public ElevatorSubsystem(){
 
@@ -76,23 +60,18 @@ public class ElevatorSubsystem extends SubsystemBase{
     
         // Elevator Encoder
         encoder = m_ElevatorLeftSpark.getEncoder();
-
     }
 
     public void init() {
         // Configure right Elevator Motor to follow left just in case this was missed at startup        
         ElevatorConstants.followConfig.follow(m_ElevatorLeftSpark, true);
-        m_ElevatorRightSpark.configure(ElevatorConstants.followConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-
-        manualcontrol = true;}
+        m_ElevatorRightSpark.configure(ElevatorConstants.followConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);}
 
 
-    private double scaledSpeedToTop() {
-        currentposition = encoder.getPosition();
+    private double scaledSpeedToTop() {        
         return ElevatorConstants.kElevatorSpeed * Math.min(150,(ElevatorConstants.kHighestLevel - currentposition))/150; }
     
-    private double scaledSpeedToBottom() {
-        currentposition = encoder.getPosition();
+    private double scaledSpeedToBottom() {        
         return -ElevatorConstants.kElevatorSpeed * Math.min(100, currentposition)/100; }
 
     public void robotPeriodic() {
@@ -100,17 +79,16 @@ public class ElevatorSubsystem extends SubsystemBase{
         // Speed limiter used to limit swerve drive speed based on elevator height to prevent tipping with a higher center of gravity
         elevatorspeedlimiter = (ElevatorConstants.kHighestLevel + 70 - currentposition) / (ElevatorConstants.kHighestLevel + 70); }
 
-
-
-
     public void raise() {
+        currentposition = encoder.getPosition();
         if (currentposition < ElevatorConstants.kHighestLevel) {
             currentspeed = scaledSpeedToTop();
             m_ElevatorLeftSpark.set(currentspeed);}
         else {
             m_ElevatorLeftSpark.stopMotor();}}
 
-    public void lower() {        
+    public void lower() {    
+        currentposition = encoder.getPosition();    
         if (currentposition > ElevatorConstants.kLowestLevel) {
             currentspeed = scaledSpeedToBottom();
             m_ElevatorLeftSpark.set(currentspeed);}

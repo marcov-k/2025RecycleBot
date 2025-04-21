@@ -16,14 +16,26 @@ import com.kauailabs.navx.frc.AHRS;
 public class DriveSubsystem extends SubsystemBase {
   
     public static final class DriveConstants {
-        // Driving Parameters 
-        public static final double kMaxSpeedMetersPerSecond = 4.8; // Default is 4.8 meters per second     
-        public static final double kMaxAngularSpeed = 2 * Math.PI; // Default is 2 PI radians (one full rotation) per second 
+
+        // SPARK MAX CAN IDs
+        public static final int kFrontLeftDrivingCanId = 1;
+        public static final int kFrontRightDrivingCanId = 2;
+        public static final int kRearRightDrivingCanId = 3;
+        public static final int kRearLeftDrivingCanId = 4;    
+
+        public static final int kFrontLeftTurningCanId = 5;    
+        public static final int kFrontRightTurningCanId = 6;
+        public static final int kRearRightTurningCanId = 7;
+        public static final int kRearLeftTurningCanId = 8;  
 
         // Chassis configuration
         public static final double kWheelBase = Units.inchesToMeters(26.5);
         public static final double kTrackWidth = Units.inchesToMeters(26.5);
-            
+
+        // Driving Parameters 
+        public static final double kMaxSpeedMetersPerSecond = 4.8; // Default is 4.8 meters per second     
+        public static final double kMaxAngularSpeed = 2 * Math.PI; // Default is 2 PI radians (one full rotation) per second 
+
         // Distance between front and back wheels on robot
         public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
             new Translation2d(kWheelBase / 2, kTrackWidth / 2),
@@ -36,19 +48,7 @@ public class DriveSubsystem extends SubsystemBase {
         public static final double kFrontRightChassisAngularOffset = 0;
         public static final double kBackLeftChassisAngularOffset = Math.PI;
         public static final double kBackRightChassisAngularOffset = Math.PI / 2;
-
-        // SPARK MAX CAN IDs
-        public static final int kFrontLeftDrivingCanId = 1;
-        public static final int kFrontRightDrivingCanId = 2;
-        public static final int kRearLeftDrivingCanId = 3;    
-        public static final int kRearRightDrivingCanId = 4;
-
-        public static final int kFrontLeftTurningCanId = 5;    
-        public static final int kFrontRightTurningCanId = 6;
-        public static final int kRearLeftTurningCanId = 7;
-        public static final int kRearRightTurningCanId = 8;
-
-        public static final double kUnitstoFeet = 4.2;
+      
     }  
 
   // Create 4 instances of SwerveModules

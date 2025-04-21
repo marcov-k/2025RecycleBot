@@ -35,7 +35,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    elevator.robotPeriodic();
+  }
 
   @Override
   public void disabledInit() {}
@@ -53,14 +55,17 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     // Initially using field relative
     fieldRelative = false;    
+    swerveDrive.reset();
   }
 
   @Override
   public void teleopPeriodic() {
     
-      // Back button - Toggles field relative on and off   
+    // Back button - Toggles field relative on and off   
     if (controller.getBackButtonPressed()) { fieldRelative = !fieldRelative; }
 
+
+    // Bumpers raise or lower the elevator
     if (controller.getRightBumperButton()) {
       elevator.raise();
     }
@@ -71,7 +76,7 @@ public class Robot extends TimedRobot {
       elevator.stop();
     }
     
-    // Get control values from the controller and apply a deadband
+    // Get control values from the controller and apply a deadband and limit speed based on elevator height.
     forward = MathUtil.applyDeadband(-controller.getLeftY()*.2, 0.02) * elevator.elevatorspeedlimiter;
     strafe = MathUtil.applyDeadband(controller.getLeftX()*.2, 0.02) * elevator.elevatorspeedlimiter;
     rotate = MathUtil.applyDeadband(controller.getRightX()*.2, 0.02);
@@ -82,8 +87,22 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void testInit() {}
+  public void testInit() {
+    elevator.init();
+  }
 
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    elevator.testPeriodic();
+    // Bumpers raise or lower the elevator
+    if (controller.getRightBumperButton()) {
+      elevator.raise();
+    }
+    else if (controller.getLeftBumperButton()) {
+      elevator.lower();      
+    }
+    else {
+      elevator.stop();
+    }
+  }
 }

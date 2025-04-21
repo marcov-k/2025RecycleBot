@@ -106,4 +106,8 @@ public class DriveSubsystem extends SubsystemBase {
   
   }
 
+  public void reset(){
+    m_gyro.zeroYaw();
+  }
+
 }

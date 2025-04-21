@@ -17,6 +17,7 @@ public class ElevatorSubsystem extends SubsystemBase{
     private RelativeEncoder encoder;
     private double currentspeed;
     private double currentposition;
+    private double previousposition;
     public double elevatorspeedlimiter;
    
 
@@ -97,5 +98,12 @@ public class ElevatorSubsystem extends SubsystemBase{
 
     public void stop() {
         m_ElevatorLeftSpark.stopMotor(); }
+
+    public void testPeriodic() {
+        currentposition = encoder.getPosition();
+        if (previousposition != currentposition)
+            System.out.println("Elevator position: " + currentposition);
+        previousposition = currentposition;
+    }
 
 }

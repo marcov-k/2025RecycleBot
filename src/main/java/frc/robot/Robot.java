@@ -87,7 +87,7 @@ public class Robot extends TimedRobot {
     strafe = MathUtil.applyDeadband(controller.getLeftX()*.2, 0.02) * elevator.elevatorspeedlimiter;
     rotate = MathUtil.applyDeadband(controller.getRightX()*.2, 0.02);
 
-    monkey.drivestick(forward);
+    monkey.drivestick(forward, rotate);
 
     // Send controller values to swerve drive
     swerveDrive.drive(forward, strafe, rotate, fieldRelative);

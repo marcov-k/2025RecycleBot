@@ -72,7 +72,7 @@ public class ElevatorSubsystem extends SubsystemBase{
 
 
     private double scaledSpeedToTop() {        
-        return ElevatorConstants.kElevatorSpeed * Math.min(kSlowdownlevelAscending,(ElevatorConstants.kHighestLevel - currentposition))/kSlowdownlevelAscending; }
+        return ElevatorConstants.kElevatorSpeed * Math.min(kSlowdownLevelAscending,(ElevatorConstants.kHighestLevel - currentposition))/kSlowdownLevelAscending; }
     
     private double scaledSpeedToBottom() {        
         return -ElevatorConstants.kElevatorSpeed * Math.min(kSlowdownLevelDescending, currentposition)/kSlowdownLevelDescending; }

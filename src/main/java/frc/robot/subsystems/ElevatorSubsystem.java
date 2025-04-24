@@ -30,7 +30,9 @@ public class ElevatorSubsystem extends SubsystemBase{
         public static final double kElevatorSpeed = 1.0;
 
         public static final double kLowestLevel = 0.0;
-        public static final double kHighestLevel = 100.0;
+        public static final double kHighestLevel = 200.0;
+        public static final double kSlowdownLevelAscending = 170;
+        public static final double kSlowdownLevelDescending = 70;
 
         public static final SparkMaxConfig leadConfig = new SparkMaxConfig();
         public static final SparkMaxConfig followConfig = new SparkMaxConfig();
@@ -70,10 +72,10 @@ public class ElevatorSubsystem extends SubsystemBase{
 
 
     private double scaledSpeedToTop() {        
-        return ElevatorConstants.kElevatorSpeed * Math.min(150,(ElevatorConstants.kHighestLevel - currentposition))/150; }
+        return ElevatorConstants.kElevatorSpeed * Math.min(kSlowdownlevelAscending,(ElevatorConstants.kHighestLevel - currentposition))/kSlowdownlevelAscending; }
     
     private double scaledSpeedToBottom() {        
-        return -ElevatorConstants.kElevatorSpeed * Math.min(100, currentposition)/100; }
+        return -ElevatorConstants.kElevatorSpeed * Math.min(kSlowdownLevelDescending, currentposition)/kSlowdownLevelDescending; }
 
     public void robotPeriodic() {
         currentposition = encoder.getPosition();        

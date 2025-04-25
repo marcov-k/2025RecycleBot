@@ -1,10 +1,8 @@
 build/
-gradle/
-.gradle/
+bin/
 .vscode/
 .wpilib/
-bin/
-/bin
+.gradle/
+*.jar
 *.class
-/bin/main/frc/robot/subsystems
-/bin
+*.bin

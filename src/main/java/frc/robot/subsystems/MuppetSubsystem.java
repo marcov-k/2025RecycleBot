@@ -16,10 +16,13 @@ public class MuppetSubsystem extends SubsystemBase{
     }
 
     public void drivestick(double forward, double rotate) {
-        double left = clamp((forward + 1.0)/2.0 + (rotate * 0.25));  
-        double right = clamp((forward + 1.0)/2.0 - (rotate * 0.25));
+        double right = clamp(forward*1.5 + 0.5);  
+        double left = 1.0-right;
 
-        if ((left != 0.5) || (right != 0.5)) {
+        right = right - rotate*1.5;
+        left = left - rotate*1.5;
+
+        if ((forward != 0) || (rotate != 0.0)) {
             driving = true;
             lefthandservo.set(left);
             righthandservo.set(right);

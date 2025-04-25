@@ -72,10 +72,10 @@ public class ElevatorSubsystem extends SubsystemBase{
 
 
     private double scaledSpeedToTop() {        
-        return ElevatorConstants.kElevatorSpeed * Math.min(kSlowdownLevelAscending,(ElevatorConstants.kHighestLevel - currentposition))/kSlowdownLevelAscending; }
+        return ElevatorConstants.kElevatorSpeed * Math.min(ElevatorConstants.kSlowdownLevelAscending,(ElevatorConstants.kHighestLevel - currentposition))/ElevatorConstants.kSlowdownLevelAscending; }
     
     private double scaledSpeedToBottom() {        
-        return -ElevatorConstants.kElevatorSpeed * Math.min(kSlowdownLevelDescending, currentposition)/kSlowdownLevelDescending; }
+        return -ElevatorConstants.kElevatorSpeed * Math.min(ElevatorConstants.kSlowdownLevelDescending, currentposition)/ElevatorConstants.kSlowdownLevelDescending; }
 
     public void robotPeriodic() {
         currentposition = encoder.getPosition();        

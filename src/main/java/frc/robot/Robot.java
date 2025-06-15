@@ -32,9 +32,6 @@ public class Robot extends TimedRobot {
   // The elevator
   private final ElevatorSubsystem elevator = new ElevatorSubsystem();
   
-  // The muppet
-  private final MuppetSubsystem monkey = new MuppetSubsystem();
-
   private final DigitalInput button = new DigitalInput(0);
 
   @Override
@@ -76,55 +73,23 @@ public class Robot extends TimedRobot {
 
 
     // Bumpers raise or lower the elevator
-    if (controller.getRightBumperButton()) {
-      monkey.elevatorstick(0.6);
+    if (controller.getRightBumperButton()) {      
       elevator.raise();
     }
-    else if (controller.getLeftBumperButton()) {
-      monkey.elevatorstick(0.4);
+    else if (controller.getLeftBumperButton()) {      
       elevator.lower();      
     }
     else {
-      monkey.elevatorstick(0.5);
       elevator.stop();
     }
     
 
 
-    if (controller.getXButton()) {
-      monkey.leftstick(0.25);
-    }
-    
-    if (controller.getBButton()) {
-      monkey.rightstick(0.75);
-    }
-
-    if (controller.getLeftTriggerAxis() > 0.0) {
-      monkey.leftstick(1-controller.getLeftTriggerAxis());
-    }
-
-    if (controller.getRightTriggerAxis() > 0.0) {
-      monkey.rightstick(controller.getRightTriggerAxis());
-    }
-
-    if (button.get()){
-      timePressed = System.currentTimeMillis();
-    }
-
-    
-
-    if (System.currentTimeMillis() < (timePressed + 5000)) 
-      speedLimiter = 0.5;
-    else
-      speedLimiter = 1.0;
-
     // Get control values from the controller and apply a deadband and limit speed based on elevator height.
-    forward = MathUtil.applyDeadband(-controller.getLeftY()*driverSpeedLimit, 0.02) * elevator.elevatorspeedlimiter * speedLimiter;
-    strafe = MathUtil.applyDeadband(controller.getLeftX()*driverSpeedLimit, 0.02) * elevator.elevatorspeedlimiter * speedLimiter;
-    rotate = MathUtil.applyDeadband(controller.getRightX()*driverSpeedLimit, 0.02) * speedLimiter;
+    forward = MathUtil.applyDeadband(-controller.getLeftY()*driverSpeedLimit, 0.02) * elevator.elevatorspeedlimiter;
+    strafe = MathUtil.applyDeadband(controller.getLeftX()*driverSpeedLimit, 0.02) * elevator.elevatorspeedlimiter;
+    rotate = MathUtil.applyDeadband(controller.getRightX()*driverSpeedLimit, 0.02);
 
-
-    monkey.drivestick(forward, rotate);
 
     // Send controller values to swerve drive
     swerveDrive.drive(forward, strafe, rotate, fieldRelative);
@@ -133,21 +98,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-    elevator.init();
   }
 
   @Override
   public void testPeriodic() {
-    elevator.testPeriodic();
-    // Bumpers raise or lower the elevator
-    if (controller.getRightBumperButton()) {
-      elevator.raise();
-    }
-    else if (controller.getLeftBumperButton()) {
-      elevator.lower();      
-    }
-    else {
-      elevator.stop();
-    }
   }
 }

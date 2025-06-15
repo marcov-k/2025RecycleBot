@@ -37,7 +37,16 @@ public class MuppetSubsystem extends SubsystemBase{
     public void elevatorstick(double value) {
         if (!driving){
             righthandservo.set(value);
+            lefthandservo.set(value);
         }
+    }
+
+    public void leftstick(double value){
+        lefthandservo.set(value);
+    }
+
+    public void rightstick(double value){
+        righthandservo.set(value);
     }
 
     private double clamp(double value){

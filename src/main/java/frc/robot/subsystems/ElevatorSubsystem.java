@@ -31,7 +31,7 @@ public class ElevatorSubsystem extends SubsystemBase{
 
         public static final double kLowestLevel = 0.0;
         public static final double kHighestLevel = 200.0;
-        public static final double kSlowdownLevelAscending = 170;
+        public static final double kSlowdownLevelAscending = 190;
         public static final double kSlowdownLevelDescending = 70;
 
         public static final SparkMaxConfig leadConfig = new SparkMaxConfig();

@@ -4,7 +4,6 @@
 
 package frc.robot;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.*;
@@ -32,7 +31,6 @@ public class Robot extends TimedRobot {
   // The elevator
   private final ElevatorSubsystem elevator = new ElevatorSubsystem();
   
-  private final DigitalInput button = new DigitalInput(0);
 
   @Override
   public void robotInit() {
@@ -83,13 +81,10 @@ public class Robot extends TimedRobot {
       elevator.stop();
     }
     
-
-
     // Get control values from the controller and apply a deadband and limit speed based on elevator height.
     forward = MathUtil.applyDeadband(-controller.getLeftY()*driverSpeedLimit, 0.02) * elevator.elevatorspeedlimiter;
     strafe = MathUtil.applyDeadband(controller.getLeftX()*driverSpeedLimit, 0.02) * elevator.elevatorspeedlimiter;
     rotate = MathUtil.applyDeadband(controller.getRightX()*driverSpeedLimit, 0.02);
-
 
     // Send controller values to swerve drive
     swerveDrive.drive(forward, strafe, rotate, fieldRelative);

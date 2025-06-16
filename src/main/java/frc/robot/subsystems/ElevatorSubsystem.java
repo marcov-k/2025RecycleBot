@@ -2,18 +2,22 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
 public class ElevatorSubsystem extends SubsystemBase{
 
     private final SparkMax m_ElevatorLeftSpark; 
     private final SparkMax m_ElevatorRightSpark;
+    private SparkClosedLoopController elevatorClosedLoopController;
     private RelativeEncoder encoder;
     private double currentspeed;
     private double currentposition;
@@ -29,11 +33,15 @@ public class ElevatorSubsystem extends SubsystemBase{
         // Speed
         public static final double kElevatorSpeed = 1.0;
 
+        // Highest and lowest levels
         public static final double kLowestLevel = 0.0;
         public static final double kHighestLevel = 200.0;
+
+        // Ascending and Descending levels to start slowing down
         public static final double kSlowdownLevelAscending = 190;
         public static final double kSlowdownLevelDescending = 70;
 
+        // SparkMax Configurations
         public static final SparkMaxConfig leadConfig = new SparkMaxConfig();
         public static final SparkMaxConfig followConfig = new SparkMaxConfig();
 
@@ -43,7 +51,7 @@ public class ElevatorSubsystem extends SubsystemBase{
             leadConfig.openLoopRampRate(2.0);   
             leadConfig.closedLoopRampRate(0.0);   
             leadConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-            leadConfig.closedLoop.pid(0.4, 0, 0.2);
+            leadConfig.closedLoop.pid(0.1, 0, 0);
             leadConfig.closedLoop.outputRange(-1,1);
             followConfig.apply(leadConfig);
             followConfig.inverted(true);
@@ -63,6 +71,8 @@ public class ElevatorSubsystem extends SubsystemBase{
     
         // Elevator Encoder
         encoder = m_ElevatorLeftSpark.getEncoder();
+        elevatorClosedLoopController = m_ElevatorLeftSpark.getClosedLoopController();
+
     }
 
     public void init() {
@@ -100,6 +110,11 @@ public class ElevatorSubsystem extends SubsystemBase{
 
     public void stop() {
         m_ElevatorLeftSpark.stopMotor(); }
+
+
+    public void GoToClosedLoopPosition(int targetPosition) {
+        elevatorClosedLoopController.setReference(targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+    } 
 
     public void testPeriodic() {
         currentposition = encoder.getPosition();

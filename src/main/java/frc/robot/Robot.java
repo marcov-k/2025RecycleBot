@@ -81,6 +81,16 @@ public class Robot extends TimedRobot {
       elevator.stop();
     }
     
+
+    if (controller.getYButtonPressed()) {
+      elevator.GoToClosedLoopPosition(100);
+    }
+
+    if (controller.getAButtonPressed()) {
+      elevator.GoToClosedLoopPosition(50);
+    }
+
+
     // Get control values from the controller and apply a deadband and limit speed based on elevator height.
     forward = MathUtil.applyDeadband(-controller.getLeftY()*driverSpeedLimit, 0.02) * elevator.elevatorspeedlimiter;
     strafe = MathUtil.applyDeadband(controller.getLeftX()*driverSpeedLimit, 0.02) * elevator.elevatorspeedlimiter;

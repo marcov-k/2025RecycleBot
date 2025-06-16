@@ -23,6 +23,8 @@ public class ElevatorSubsystem extends SubsystemBase{
     private double currentposition;
     private double previousposition;
     public double elevatorspeedlimiter;
+    private int closedLoopTarget;
+    private boolean manualcontrol;
    
 
     public static final class ElevatorConstants {
@@ -72,7 +74,7 @@ public class ElevatorSubsystem extends SubsystemBase{
         // Elevator Encoder
         encoder = m_ElevatorLeftSpark.getEncoder();
         elevatorClosedLoopController = m_ElevatorLeftSpark.getClosedLoopController();
-
+        manualcontrol = true;
     }
 
     public void init() {
@@ -92,8 +94,15 @@ public class ElevatorSubsystem extends SubsystemBase{
         // Speed limiter used to limit swerve drive speed based on elevator height to prevent tipping with a higher center of gravity
         elevatorspeedlimiter = (ElevatorConstants.kHighestLevel + 70 - currentposition) / (ElevatorConstants.kHighestLevel + 70); }
 
+    public void teleopPeriodic() {
+        if (!manualcontrol) {
+            elevatorClosedLoopController.setReference(closedLoopTarget, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+        }
+    }
+
     public void raise() {
         currentposition = encoder.getPosition();
+        manualcontrol = true;
         if (currentposition < ElevatorConstants.kHighestLevel) {
             currentspeed = scaledSpeedToTop();
             m_ElevatorLeftSpark.set(currentspeed);}
@@ -101,6 +110,7 @@ public class ElevatorSubsystem extends SubsystemBase{
             m_ElevatorLeftSpark.stopMotor();}}
 
     public void lower() {    
+        manualcontrol = true;
         currentposition = encoder.getPosition();    
         if (currentposition > ElevatorConstants.kLowestLevel) {
             currentspeed = scaledSpeedToBottom();
@@ -113,7 +123,8 @@ public class ElevatorSubsystem extends SubsystemBase{
 
 
     public void GoToClosedLoopPosition(int targetPosition) {
-        elevatorClosedLoopController.setReference(targetPosition, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+        manualcontrol = false;
+        closedLoopTarget = targetPosition;        
     } 
 
     public void testPeriodic() {

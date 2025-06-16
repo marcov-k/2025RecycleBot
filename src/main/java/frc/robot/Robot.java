@@ -82,11 +82,11 @@ public class Robot extends TimedRobot {
     }
     
 
-    if (controller.getYButton()) {
+    if (controller.getYButtonPressed()) {
       elevator.GoToClosedLoopPosition(100);
     }
 
-    if (controller.getAButton()) {
+    if (controller.getAButtonPressed()) {
       elevator.GoToClosedLoopPosition(50);
     }
 
@@ -98,7 +98,8 @@ public class Robot extends TimedRobot {
 
     // Send controller values to swerve drive
     swerveDrive.drive(forward, strafe, rotate, fieldRelative);
-
+    
+    elevator.teleopPeriodic();
   }
 
   @Override

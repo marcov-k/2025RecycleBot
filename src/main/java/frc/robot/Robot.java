@@ -83,11 +83,11 @@ public class Robot extends TimedRobot {
     
 
     if (controller.getYButtonPressed()) {
-      elevator.GoToClosedLoopPosition(100);
+      elevator.GoToClosedLoopPosition(150);
     }
 
     if (controller.getAButtonPressed()) {
-      elevator.GoToClosedLoopPosition(50);
+      elevator.GoToClosedLoopPosition(75);
     }
 
 

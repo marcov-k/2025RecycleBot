@@ -3,6 +3,5 @@ bin/
 .vscode/
 .wpilib/
 .gradle/
-*.jar
 *.class
 *.bin
